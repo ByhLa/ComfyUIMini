@@ -10,18 +10,17 @@ const currentImageProgressInnerElem = document.querySelector('.current-image-pro
 const currentImageProgressTextElem = document.querySelector('.current-image-progress .progress-bar-text');
 const cancelGenerationButtonElem = document.querySelector('.cancel-run-button');
 
-
 const workflowDataObject = workflowDataFromEjs;
 workflowDataObject['json'] = workflowDataObject.json ? workflowDataObject.json : await fetchLocalWorkflow();
 
 let totalImageCount = 0;
 let completedImageCount = 0;
 
-const ws = new WebSocket(`ws://${window.location.host}/ws`);
+const ws = new WebSocket(`wss://${window.location.host}/ws`);
 ws.onopen = () => console.log('Connected to WebSocket client');
 
 function loadWorkflow() {
-    renderInputs(workflowDataObject["json"]);
+    renderInputs(workflowDataObject['json']);
 
     startEventListeners();
 }
@@ -33,7 +32,6 @@ async function fetchLocalWorkflow() {
         handleError(error);
     }
 }
-
 
 function startEventListeners() {
     document.querySelector('.run-workflow').addEventListener('click', runWorkflow);
@@ -184,7 +182,7 @@ function updateProgressBars(messageData) {
 function updateImagePreview(messageData) {
     const currentSkeletonLoaderElem =
         outputImagesContainer.querySelectorAll('.image-placeholder-skeleton')[
-        totalImageCount - completedImageCount - 1
+            totalImageCount - completedImageCount - 1
         ];
 
     if (!currentSkeletonLoaderElem) {
