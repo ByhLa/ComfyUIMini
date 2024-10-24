@@ -56,8 +56,8 @@ export class WorkflowEditor {
             return null;
         }
 
-        for (const [nodeId, node] of Object.entries(this.workflowObject)) {
-            await this.renderNodeInputs(nodeId, node);
+        for (const input of this.workflowObject['_comfyuimini_meta'].input_options) {
+            await this.renderNodeInputs(input);
         }
 
         this.startInputEventListeners();
@@ -69,15 +69,17 @@ export class WorkflowEditor {
      * @param {string} nodeId The ID of the node in the workflow.
      * @param {object} node The node object.
      */
-    async renderNodeInputs(nodeId, node) {
-        if (nodeId.charAt(0) == '_') {
-            return;
-        }
+    async renderNodeInputs(input) {
+        const inputName = input.input_name_in_node;
+        const nodeId = input.node_id;
 
-        for (const [inputName, inputValue] of Object.entries(node.inputs)) {
+        const node = this.workflowObject[nodeId];
+        if (node?.inputs[inputName] !== undefined) {
+            const inputValue = node.inputs[inputName];
+
             if (Array.isArray(inputValue)) {
                 // Inputs that come from other nodes come as an array
-                continue;
+                return;
             }
 
             const userInputConfig = this.getUserInputConfig(nodeId, inputName);
@@ -89,7 +91,7 @@ export class WorkflowEditor {
 
     /**
      * Gets the `/objectinfo` metadata for a given input id and node id.
-     * 
+     *
      * @param {string} inputType The type of input in the node. e.g. `seed`, `scheduler`, `ckpt_name`.
      * @param {string} nodeId The ID of the node in the workflow.
      * @returns {Promise<object>} The metadata for the input type.
@@ -101,7 +103,6 @@ export class WorkflowEditor {
 
             this.comfyInputsInfo = comfyObjectMetadataJson;
         }
-
 
         const nodeClassType = this.workflowObject[nodeId].class_type;
 
@@ -228,7 +229,7 @@ export class WorkflowEditor {
 
     /**
      * Renders a default value input for a input, differs based on input type.
-     * 
+     *
      * @param {InputConfig} inputConfig The config for the input.
      * @param {string} idPrefix The id prefix for each element in the input.
      * @returns {string} The rendered HTML for the default value input.
@@ -237,7 +238,7 @@ export class WorkflowEditor {
         const inputDefault = inputConfig.default || '';
 
         let inputHTML = `<label for="${idPrefix}-default">Default</label>`;
-        
+
         switch (inputConfig.comfyMetadata.type) {
             case 'ARRAY':
                 const optionsList = inputConfig.comfyMetadata.data;
@@ -245,7 +246,7 @@ export class WorkflowEditor {
                 inputHTML += `<select id="${idPrefix}-default" class="workflow-input workflow-input-default">`;
 
                 for (const option of optionsList) {
-                    inputHTML += `<option value="${option}" ${inputDefault == option ? "selected" : ""}>${option}</option>`;
+                    inputHTML += `<option value="${option}" ${inputDefault == option ? 'selected' : ''}>${option}</option>`;
                 }
 
                 inputHTML += '</select>';
@@ -357,8 +358,6 @@ export class WorkflowEditor {
                 continue;
             }
 
-
-
             const inputTitleElement = /** @type {HTMLInputElement} */ (
                 inputContainer.querySelector('.workflow-input-title')
             );
@@ -369,8 +368,6 @@ export class WorkflowEditor {
             }
 
             inputOptions['title'] = inputTitleElement.value;
-
-
 
             const defaultValueElement = /** @type {HTMLInputElement} */ (
                 inputContainer.querySelector('.workflow-input-default')
