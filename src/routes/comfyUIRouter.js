@@ -1,6 +1,6 @@
 const express = require('express');
 const { getHistory, getQueue, interruptGeneration, getImage } = require('../utils/comfyAPIUtils');
-const { inputsInfoObject } = require('../utils/objectInfoUtils');
+const { inputsInfoObject, loadObjectInfoMap } = require('../utils/objectInfoUtils');
 
 const router = express.Router();
 
@@ -41,7 +41,9 @@ router.get('/interrupt', async (req, res) => {
 });
 
 router.get('/inputsinfo', (req, res) => {
-    res.json(inputsInfoObject);
+    loadObjectInfoMap().then(() => {
+        res.json(inputsInfoObject);
+    });
 });
 
 module.exports = router;
