@@ -28,7 +28,7 @@
                 { action: ["/js/pages/workflow.js", "cancelRun"], icon: "stop", text: "Cancel", type: "function" },
                 { action: ["/js/pages/workflow.js", "runWorkflow"], icon: "generate", text: "Generate", type: "function" },
                 { action: `/edit/${workflow.type}/${workflow.identifier}`, icon: "edit", text: "Edit", type: "link" },
-                { action: "/settings", icon: "settings", text: "Settings", type: "link" },
+                { action: ["/js/pages/workflow.js", "resetWorkflow"], icon: "settings", text: "Reset", type: "function" },
             ] 
         }) %>
     </div>

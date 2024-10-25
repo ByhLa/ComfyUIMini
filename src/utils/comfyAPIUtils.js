@@ -56,7 +56,7 @@ async function getImage(filename, subfolder, type) {
 
 /**
  * Gets the list of available models.
- * 
+ *
  * @returns {Promise<string[]>} A promise that resolves to an array of strings representing the available models.
  */
 async function getModelTypesList() {
@@ -72,7 +72,7 @@ async function getModelTypesList() {
 
 /**
  * Gets the list of available models for a specific model type.
- * 
+ *
  * @param {string} modelType The model type to get the list of available models for.
  * @returns {Promise<string[]>} A promise that resolves to a list of strings representing the available models for the specified model type.
  */
@@ -99,8 +99,6 @@ async function getQueue() {
 
     return response.data;
 }
-
-
 
 async function getOutputImages(promptId) {
     const outputImages = {};
@@ -152,7 +150,6 @@ async function generateImage(workflowPrompt, wsClient) {
 
                 wsClient.send(JSON.stringify({ type: 'total_images', data: Object.values(cachedImages).length }));
                 wsClient.send(JSON.stringify({ type: 'completed', data: cachedImages }));
-
             } else {
                 wsClient.send(JSON.stringify({ type: 'total_images', data: queueJson['queue_running'][0][4].length }));
             }
@@ -334,9 +331,14 @@ async function comfyUICheck() {
 }
 
 async function interruptGeneration() {
-    const response = await comfyuiAxios.post('/interrupt');
+    try {
+        const response = await comfyuiAxios.post('/interrupt');
 
-    return response.data;
+        return response.data;
+    } catch (error) {
+        logger.warn(error);
+        return { data: {} };
+    }
 }
 
 async function getObjectInfo() {
@@ -359,5 +361,5 @@ module.exports = {
     getImage,
     getModelTypesList,
     getItemsForModelType,
-    getObjectInfo
+    getObjectInfo,
 };

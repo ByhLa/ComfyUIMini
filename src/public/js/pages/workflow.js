@@ -10,8 +10,17 @@ const currentImageProgressInnerElem = document.querySelector('.current-image-pro
 const currentImageProgressTextElem = document.querySelector('.current-image-progress .progress-bar-text');
 const cancelGenerationButtonElem = document.querySelector('.cancel-run-button');
 
+const sessionWorkflowKey = `save${window.location.pathname}`;
 const workflowDataObject = workflowDataFromEjs;
-workflowDataObject['json'] = workflowDataObject.json ? workflowDataObject.json : await fetchLocalWorkflow();
+
+if (sessionStorage.getItem(sessionWorkflowKey)) {
+    workflowDataObject.json = {
+        ...JSON.parse(sessionStorage.getItem(sessionWorkflowKey)),
+        _comfyuimini_meta: workflowDataObject.json['_comfyuimini_meta'],
+    };
+} else {
+    workflowDataObject['json'] = workflowDataObject.json ? workflowDataObject.json : await fetchLocalWorkflow();
+}
 
 let totalImageCount = 0;
 let completedImageCount = 0;
@@ -21,8 +30,6 @@ ws.onopen = () => console.log('Connected to WebSocket client');
 
 function loadWorkflow() {
     renderInputs(workflowDataObject['json']);
-
-    startEventListeners();
 }
 
 async function fetchLocalWorkflow() {
@@ -129,8 +136,10 @@ export async function runWorkflow() {
     totalImageCount = 0;
     completedImageCount = 0;
 
-    const filledWorkflow = fillWorkflowWithUserParams();
-    ws.send(JSON.stringify(filledWorkflow));
+    const filledWorkflow = JSON.stringify(fillWorkflowWithUserParams());
+    sessionStorage.setItem(sessionWorkflowKey, filledWorkflow);
+
+    ws.send(filledWorkflow);
 
     cancelGenerationButtonElem.classList.remove('disabled');
 
@@ -232,4 +241,13 @@ export function cancelRun() {
     cancelGenerationButtonElem.classList.add('disabled');
 }
 
+export function resetWorkflow() {
+    sessionStorage.removeItem(sessionWorkflowKey);
+
+    const inputsContainer = document.querySelector('.inputs-container');
+    inputsContainer.innerHTML = '';
+    loadWorkflow();
+}
+
 loadWorkflow();
+startEventListeners();
