@@ -86,7 +86,7 @@ export class WorkflowEditor {
             const renderConfig = await this.buildRenderConfig(userInputConfig, inputValue, nodeId, inputName);
 
             if (!renderConfig) {
-                continue;
+                return;
             }
 
             await this.renderInput(renderConfig);
