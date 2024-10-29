@@ -26,13 +26,9 @@ export function renderInputs(workflowObject) {
                 throw new Error(`No renderer found for input type ${inputOptionsFromComfyUI.type}`);
             }
 
-            let dataForRenderer = inputData;
-            if (inputOptionsFromComfyUI.type === 'ARRAY') {
-                dataForRenderer.list = inputOptionsFromComfyUI.data;
-            } else {
-                dataForRenderer = { ...dataForRenderer, ...inputOptionsFromComfyUI.data };
-            }
-            dataForRenderer.default = inputDefaultFromWorkflow;
+        let dataForRenderer = inputData;
+        dataForRenderer = { ...dataForRenderer, ...inputOptionsFromComfyUI };
+        dataForRenderer.default = inputDefaultFromWorkflow;
 
             const inputHtml = renderer(dataForRenderer);
             inputsContainer.innerHTML += inputHtml;
