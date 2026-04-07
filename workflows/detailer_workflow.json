@@ -1,0 +1,528 @@
+{
+  "18": {
+    "inputs": {
+      "string": "(color scheme\\:tamanoi peromekuri:0.7763),(color scheme\\:onono imoko:0.607),color scheme\\:nopossumachine, (artstyle\\:tianliang duohe fangdongye:0.8), 1girl, solo, annie \\(league of legends\\), general"
+    },
+    "class_type": "Primitive string multiline [Crystools]",
+    "_meta": {
+      "title": "Positive Prompt"
+    }
+  },
+  "19": {
+    "inputs": {
+      "string": ""
+    },
+    "class_type": "Primitive string multiline [Crystools]",
+    "_meta": {
+      "title": "Negative Prompt"
+    }
+  },
+  "89": {
+    "inputs": {
+      "lora_01": "None",
+      "strength_01": "1",
+      "lora_02": "None",
+      "strength_02": "1",
+      "lora_03": "None",
+      "strength_03": "1",
+      "lora_04": "None",
+      "strength_04": "1",
+      "model": [
+        "20:0",
+        0
+      ],
+      "clip": [
+        "20:3",
+        0
+      ]
+    },
+    "class_type": "Lora Loader Stack (rgthree)",
+    "_meta": {
+      "title": "Lora Loader Stack (rgthree)"
+    }
+  },
+  "90": {
+    "inputs": {
+      "noise_seed": [
+        "98",
+        0
+      ]
+    },
+    "class_type": "RandomNoise",
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "91": {
+    "inputs": {
+      "sampler_name": "euler"
+    },
+    "class_type": "KSamplerSelect",
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "92": {
+    "inputs": {
+      "samples": [
+        "95",
+        0
+      ],
+      "vae": [
+        "20:2",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "93": {
+    "inputs": {
+      "scheduler": "normal",
+      "steps": "30",
+      "denoise": 1,
+      "model": [
+        "77:1",
+        0
+      ]
+    },
+    "class_type": "BasicScheduler",
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "94": {
+    "inputs": {
+      "cfg": "6.6",
+      "model": [
+        "77:1",
+        0
+      ],
+      "positive": [
+        "77:4",
+        0
+      ],
+      "negative": [
+        "77:6",
+        0
+      ]
+    },
+    "class_type": "CFGGuider",
+    "_meta": {
+      "title": "CFGGuider"
+    }
+  },
+  "95": {
+    "inputs": {
+      "noise": [
+        "90",
+        0
+      ],
+      "guider": [
+        "94",
+        0
+      ],
+      "sampler": [
+        "96",
+        0
+      ],
+      "sigmas": [
+        "93",
+        0
+      ],
+      "latent_image": [
+        "20:1",
+        0
+      ]
+    },
+    "class_type": "SamplerCustomAdvanced",
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "96": {
+    "inputs": {
+      "detail_amount": "0.5",
+      "start": 0.1,
+      "end": 0.6,
+      "bias": 0.9,
+      "exponent": 6,
+      "start_offset": 0,
+      "end_offset": 0,
+      "fade": 0,
+      "smooth": true,
+      "cfg_scale_override": 0,
+      "sampler": [
+        "91",
+        0
+      ]
+    },
+    "class_type": "DetailDaemonSamplerNode",
+    "_meta": {
+      "title": "Detail Daemon Sampler"
+    }
+  },
+  "97": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "file_type": "WEBP (lossy)",
+      "remove_metadata": false,
+      "images": [
+        "92",
+        0
+      ]
+    },
+    "class_type": "SaveImagePlus",
+    "_meta": {
+      "title": "Save Image Plus"
+    }
+  },
+  "98": {
+    "inputs": {
+      "seed": "-1"
+    },
+    "class_type": "Seed (rgthree)",
+    "_meta": {
+      "title": "Seed (rgthree)"
+    }
+  },
+  "20:0": {
+    "inputs": {
+      "ckpt_name": "ILXL/ntrMIXIllustriousXL_v40.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple",
+    "_meta": {
+      "title": "Load Checkpoint"
+    }
+  },
+  "20:1": {
+    "inputs": {
+      "width": "768",
+      "height": "1280",
+      "batch_size": "1"
+    },
+    "class_type": "EmptyLatentImage",
+    "_meta": {
+      "title": "Empty Latent Image"
+    }
+  },
+  "20:2": {
+    "inputs": {
+      "vae_name": "SDXL/xlVAEC_f2.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "Load VAE"
+    }
+  },
+  "20:3": {
+    "inputs": {
+      "stop_at_clip_layer": -2,
+      "clip": [
+        "20:0",
+        1
+      ]
+    },
+    "class_type": "CLIPSetLastLayer",
+    "_meta": {
+      "title": "CLIP Set Last Layer"
+    }
+  },
+  "77:0": {
+    "inputs": {
+      "string": ""
+    },
+    "class_type": "Primitive string [Crystools]",
+    "_meta": {
+      "title": "dummy"
+    }
+  },
+  "77:1": {
+    "inputs": {
+      "text": [
+        "18",
+        0
+      ],
+      "model": [
+        "89",
+        0
+      ],
+      "clip": [
+        "89",
+        1
+      ]
+    },
+    "class_type": "LoraTagLoader",
+    "_meta": {
+      "title": "Load LoRA Tag"
+    }
+  },
+  "77:2": {
+    "inputs": {
+      "text": [
+        "19",
+        0
+      ],
+      "clip": [
+        "77:1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt1)"
+    }
+  },
+  "77:3": {
+    "inputs": {
+      "text_positive": [
+        "77:1",
+        2
+      ],
+      "text_negative": [
+        "77:0",
+        0
+      ],
+      "style": "base-extend",
+      "log_prompt": false,
+      "style_positive": true,
+      "style_negative": true
+    },
+    "class_type": "SDXLPromptStyler",
+    "_meta": {
+      "title": "SDXL Prompt Styler"
+    }
+  },
+  "77:4": {
+    "inputs": {
+      "text": [
+        "77:3",
+        0
+      ],
+      "clip": [
+        "77:1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "77:5": {
+    "inputs": {
+      "text": [
+        "77:3",
+        1
+      ],
+      "clip": [
+        "77:1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt2)"
+    }
+  },
+  "77:6": {
+    "inputs": {
+      "conditioning_to": [
+        "77:2",
+        0
+      ],
+      "conditioning_from": [
+        "77:5",
+        0
+      ]
+    },
+    "class_type": "ConditioningConcat",
+    "_meta": {
+      "title": "Conditioning (Concat)"
+    }
+  },
+  "_comfyuimini_meta": {
+    "title": "Detailer",
+    "description": "",
+    "format_version": "2",
+    "input_options": [
+      {
+        "node_id": "18",
+        "input_name_in_node": "string",
+        "title": "positive"
+      },
+      {
+        "node_id": "19",
+        "input_name_in_node": "string",
+        "title": "negative"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "lora_01",
+        "title": "lora_01"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "strength_01",
+        "title": "strength_01"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "lora_02",
+        "title": "lora_02"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "strength_02",
+        "title": "strength_02"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "lora_03",
+        "title": "lora_03"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "strength_03",
+        "title": "strength_03"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "lora_04",
+        "title": "lora_04"
+      },
+      {
+        "node_id": "89",
+        "input_name_in_node": "strength_04",
+        "title": "strength_04"
+      },
+      {
+        "node_id": "91",
+        "input_name_in_node": "sampler_name",
+        "title": "sampler_name"
+      },
+      {
+        "node_id": "93",
+        "input_name_in_node": "scheduler",
+        "title": "scheduler"
+      },
+      {
+        "node_id": "93",
+        "input_name_in_node": "steps",
+        "title": "steps"
+      },
+      {
+        "node_id": "93",
+        "input_name_in_node": "denoise",
+        "disabled": true
+      },
+      {
+        "node_id": "94",
+        "input_name_in_node": "cfg",
+        "title": "cfg"
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "detail_amount",
+        "title": "detail_amount"
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "start",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "end",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "bias",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "exponent",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "start_offset",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "end_offset",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "fade",
+        "disabled": true
+      },
+      {
+        "node_id": "96",
+        "input_name_in_node": "cfg_scale_override",
+        "disabled": true
+      },
+      {
+        "node_id": "97",
+        "input_name_in_node": "filename_prefix",
+        "disabled": true
+      },
+      {
+        "node_id": "97",
+        "input_name_in_node": "file_type",
+        "disabled": true
+      },
+      {
+        "node_id": "98",
+        "input_name_in_node": "seed",
+        "title": "seed"
+      },
+      {
+        "node_id": "20:0",
+        "input_name_in_node": "ckpt_name",
+        "title": "ckpt_name"
+      },
+      {
+        "node_id": "20:1",
+        "input_name_in_node": "width",
+        "title": "width"
+      },
+      {
+        "node_id": "20:1",
+        "input_name_in_node": "height",
+        "title": "height"
+      },
+      {
+        "node_id": "20:1",
+        "input_name_in_node": "batch_size",
+        "title": "batch_size"
+      },
+      {
+        "node_id": "20:2",
+        "input_name_in_node": "vae_name",
+        "title": "vae_name"
+      },
+      {
+        "node_id": "20:3",
+        "input_name_in_node": "stop_at_clip_layer",
+        "disabled": true
+      },
+      {
+        "node_id": "77:0",
+        "input_name_in_node": "string",
+        "disabled": true
+      },
+      {
+        "node_id": "77:3",
+        "input_name_in_node": "style",
+        "title": "style"
+      }
+    ]
+  }
+}
